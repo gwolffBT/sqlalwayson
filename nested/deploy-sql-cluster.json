@@ -225,9 +225,6 @@
 					},
 					"osDisk": {
 						"name": "[concat(variables('sqlNamePrefix'), copyindex(), '-osdisk.vhd')]",
-						"vhd": {
-							"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),copyIndex()),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'), copyindex(), '-osdisk.vhd')]"
-						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					},
@@ -282,9 +279,6 @@
 					},
 					"osDisk": {
 						"name": "[concat(variables('sqlWitnessVMName'), '-osdisk.vhd')]",
-						"vhd": {
-							"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlWitnessStorageAccountName')),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlWitnessVMName'), '-osdisk.vhd')]"
-						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					},
