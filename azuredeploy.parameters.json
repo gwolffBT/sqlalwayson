@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sqlVMSize": {
+      "value": "Standard_DS3_v2"
+    },
+    "sqlVMDisks":{
+      "value": 2
+    },
+    "sqlVMImage": {
+      "value": "SQL2016SP1-WS2016"
+    },
+    "sqlWitnessVMSize": {
+      "value": "Standard_DS1_v2"
+    },
+    "sqlWitnessVMImage": {
+      "value": "2016-Datacenter"
+    },
+    "adminUsername": {
+      "value": ""
+    },
+    "adminPassword": {
+      "value": ""
+    },
+    "existingVirtualNetworkId": {
+      "value": ""
+    },
+    "existingSqlSubnetName": {
+      "value": ""
+    },
+    "sqlLBIPAddress": {
+      "value": ""
+    },
+    "_artifactsLocation": {
+      "value": "https://raw.githubusercontent.com/pelazem/sql-server-2016-alwayson-existing-vnet-and-ad/master"
+    },
+    "_artifactsLocationSasToken": {
+      "value": ""
+    }
+  }
+}

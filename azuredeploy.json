@@ -1,0 +1,189 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sqlVMSize": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
+      ],
+      "metadata": {
+        "description": "Size of the SQL VMs to be created"
+      },
+      "defaultValue": "Standard_DS3_v2"
+    },
+    "sqlVMDisks": {
+      "type": "int",
+      "minValue": 1,
+      "maxValue": 64,
+      "metadata": {
+        "description": "Number of Managed Premium Data Disks for each SQL VM"
+      },
+      "defaultValue": 2
+    },
+    "sqlVMImage": {
+      "type": "string",
+      "allowedValues": [
+        "SQL2012SP3-WS2012R2",
+        "SQL2012SP3-WS2012R2-BYOL",
+        "SQL2014SP2-WS2012R2",
+        "SQL2014SP2-WS2012R2-BYOL",
+        "SQL2016SP1-WS2016",
+        "SQL2016SP1-WS2016-BYOL"
+      ],
+      "metadata": {
+        "description": "VM Image Offer to use for provisioning SQL VMs"
+      },
+      "defaultValue": "SQL2016SP1-WS2016"
+    },
+    "sqlWitnessVMSize": {
+      "type": "string",
+      "allowedValues": [
+          "Standard_DS1_v2",
+          "Standard_DS2_v2",
+          "Standard_DS3_v2",
+          "Standard_DS4_v2",
+          "Standard_DS5_v2",
+          "Standard_DS11_v2",
+          "Standard_DS12_v2",
+          "Standard_DS13_v2",
+          "Standard_DS14_v2",
+          "Standard_DS15_v2"
+      ],
+      "metadata": {
+        "description": "Size of the Witness VM to be created"
+      },
+      "defaultValue": "Standard_DS1_v2"
+    },
+    "sqlWitnessVMImage": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "VM Image Sku to be used for provisioning SQL Witness VM"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin username for local VM login"
+      },
+      "defaultValue": ""
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password for local VM login"
+      },
+      "defaultValue": ""
+    },
+    "existingVirtualNetworkId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the existing VNET. You can find the Resource ID for the VNET on the Properties blade of the VNET."
+      },
+      "defaultValue": ""
+    },
+    "existingSqlSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet in the existing VNET to which the SQL & Witness VMs should be deployed"
+      },
+      "defaultValue": "default"
+    },
+    "sqlLBIPAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address of ILB for the SQL Server AlwaysOn listener to be created. Should be an available IP address in the specified SQL subnet."
+      },
+      "defaultValue": "10.0.1.10"
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Location of resources that the script is dependent on such as linked templates and DSC modules"
+      },
+      "defaultValue": "https://raw.githubusercontent.com/robotechredmond/master"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access the artifacts Location. If the artifacts location is public, then no value is needed here."
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "namePrefix": "[substring(uniqueString(concat(parameters('existingSqlSubnetName'),parameters('sqlLBIPAddress'))),0,8)]",
+    "sqlSubnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSqlSubnetName'))]",
+    "deploySqlClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-sql-cluster.json',parameters('_artifactsLocationSasToken'))]",
+    "deploySqlCluster": "deploySqlCluster"
+  },
+  "resources": [
+    {
+      "name": "[variables('deploySqlCluster')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deploySqlClusterTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[variables('namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "nicSubnetUri": {
+            "value": "[variables('sqlSubnetRef')]"
+          },
+          "lbSubnetUri": {
+            "value": "[variables('sqlSubnetRef')]"
+          },
+          "sqlLBIPAddress": {
+            "value": "[parameters('sqlLBIPAddress')]"
+          },
+          "sqlVMSize": {
+            "value": "[parameters('sqlVMSize')]"
+          },
+          "sqlVMImage": {
+            "value": "[parameters('sqlVMImage')]"
+          },
+          "sqlVMDisks": {
+            "value": "[parameters('sqlVMDisks')]"
+          },
+          "sqlWitnessVMSize": {
+            "value": "[parameters('sqlWitnessVMSize')]"
+          },
+          "sqlWitnessVMImage":{
+            "value": "[parameters('sqlWitnessVMImage')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          },
+          "_artifactsLocationSasToken": {
+            "value": "[parameters('_artifactsLocationSasToken')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}
