@@ -2,6 +2,15 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "namePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique naming prefix for Azure resources"
+      },
+      "defaultValue": "",
+      "minLength": 3,
+      "maxLength": 8
+    },
     "sqlVMSize": {
       "type": "string",
       "allowedValues": [
@@ -124,7 +133,6 @@
     }
   },
   "variables": {
-    "namePrefix": "[substring(uniqueString(concat(parameters('existingSqlSubnetName'),parameters('sqlLBIPAddress'))),0,8)]",
     "sqlSubnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSqlSubnetName'))]",
     "deploySqlClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-sql-cluster.json',parameters('_artifactsLocationSasToken'))]",
     "deploySqlCluster": "deploySqlCluster"
@@ -143,7 +151,7 @@
         },
         "parameters": {
           "namePrefix": {
-            "value": "[variables('namePrefix')]"
+            "value": "[parameters('namePrefix')]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
