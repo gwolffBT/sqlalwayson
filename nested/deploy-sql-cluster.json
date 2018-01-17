@@ -58,7 +58,7 @@
 		"apiVersionStorage": "2015-06-15",
 		"sqlDiskSize": 1023,
 		"sqlWitnessDiskSize": 128,
-		"sqlNamePrefix": "[concat(parameters('namePrefix'),'-sql-')]",
+		"sqlNamePrefix": "[concat(parameters('namePrefix'),'sql0')]",
 		"sqlAvailabilitySetName": "[concat(variables('sqlNamePrefix'),'as')]",
 		"sqlLBName": "[concat(variables('sqlNamePrefix'),'ilb')]",
 		"sqllbID": "[resourceId('Microsoft.Network/loadBalancers',variables('sqlLBName'))]",
@@ -70,7 +70,7 @@
 		"sqlAOProbe1": "[concat(variables('sqlNamePrefix'),'ilbp1')]",
 		"sqlLBProbeID1": "[concat(variables('sqllbID'),'/probes/',variables('sqlAOProbe1'))]",
 		"sqlWitnessVMName": "[concat(variables('sqlNamePrefix'),'w')]",
-		"sqlAOListener1": "[concat(parameters('namePrefix'),'-agl1')]"
+		"sqlAOListener1": "[concat(parameters('namePrefix'),'agl1')]"
 	},
 	"resources": [
 		{
