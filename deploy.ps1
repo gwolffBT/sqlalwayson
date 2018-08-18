@@ -57,7 +57,7 @@ Function RegisterRP {
 # Script body
 # Execution begins here
 #******************************************************************************
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 # sign in
 Write-Host "Logging in...";
