@@ -43,11 +43,11 @@
 		},
 		"windowsImagePublisher": {
 			"type": "string",
-			"defaultValue": "MicrosoftSQLServer"
+			"defaultValue": "MicrosoftWindowsServer"
 		},
 		"windowsImageSKU": {
 			"type": "string",
-			"defaultValue": "Enterprise"
+			"defaultValue": "WindowsServer"
 		},
 		"windowsImageVersion": {
 			"type": "string",
