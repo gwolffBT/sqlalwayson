@@ -58,7 +58,7 @@
 		"apiVersionStorage": "2015-06-15",
 		"sqlDiskSize": 1023,
 		"sqlWitnessDiskSize": 128,
-		"sqlNamePrefix": "[concat(parameters('namePrefix'),'sql0')]",
+		"sqlNamePrefix": "[concat(parameters('namePrefix'),'sql')]",
 		"sqlAvailabilitySetName": "[concat(variables('sqlNamePrefix'),'as')]",
 		"sqlLBName": "[concat(variables('sqlNamePrefix'),'ilb')]",
 		"sqllbID": "[resourceId('Microsoft.Network/loadBalancers',variables('sqlLBName'))]",
@@ -133,7 +133,7 @@
 						"name": "[variables('sqlAOProbe1')]",
 						"properties": {
 							"protocol": "Tcp",
-							"port": 59999,
+							"port": 59500,
 							"intervalInSeconds": 5,
 							"numberOfProbes": 2
 						}
@@ -218,8 +218,8 @@
 				},
 				"storageProfile": {
 					"imageReference": {
-						"publisher": "[parameters('windowsImagePublisher')]",
-						"offer": "[parameters('sqlVMImage')]",
+						"publisher": "MicrosoftWindowsServer",
+						"offer": "WindowsServer",
 						"sku": "[parameters('windowsImageSKU')]",
 						"version": "[parameters('windowsImageVersion')]"
 					},

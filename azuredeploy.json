@@ -21,7 +21,8 @@
         "Standard_DS12_v2",
         "Standard_DS13_v2",
         "Standard_DS14_v2",
-        "Standard_DS15_v2"
+        "Standard_DS15_v2",
+		"Standard_D64S_v2"
       ],
       "metadata": {
         "description": "Size of the SQL VMs to be created"
@@ -40,12 +41,8 @@
     "sqlVMImage": {
       "type": "string",
       "allowedValues": [
-        "SQL2012SP3-WS2012R2",
-        "SQL2012SP3-WS2012R2-BYOL",
-        "SQL2014SP2-WS2012R2",
-        "SQL2014SP2-WS2012R2-BYOL",
-        "SQL2016SP1-WS2016",
-        "SQL2016SP1-WS2016-BYOL"
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
       ],
       "metadata": {
         "description": "VM Image Offer to use for provisioning SQL VMs"

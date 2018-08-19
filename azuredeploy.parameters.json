@@ -9,7 +9,7 @@
       "value": 2
     },
     "sqlVMImage": {
-      "value": "SQL2016SP1-WS2016"
+      "value": "2016-Datacenter"
     },
     "sqlWitnessVMSize": {
       "value": "Standard_DS1_v2"
